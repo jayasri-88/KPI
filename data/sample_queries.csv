@@ -1,0 +1,11 @@
+query_id,query_text,query_type,expected_table,complexity
+1,What was the total revenue in Mumbai last quarter?,revenue,sales,simple
+2,Which SKU underperformed in Pune compared to Bangalore in Q1 2025?,sku_performance,sales,medium
+3,Show me must-sell SKU adherence across all regions,compliance,sales,medium
+4,Rank retailers by prosperity index and show their top 3 categories,geo_spatial,retailers,complex
+5,What is the inventory turnover for Beverages in Hypermarkets?,inventory,inventory,complex
+6,Which city has the highest revenue per square foot?,geo_spatial,sales,medium
+7,Compare online vs in-store sales for Personal Care in South region,channel,sales,simple
+8,Identify stores with stock below reorder point for must-sell SKUs,inventory_alert,inventory,complex
+9,Forecast next month sales for Beverages in Delhi,forecast,sales,complex
+10,Which brand has the highest discount dependency?,pricing,sales,medium

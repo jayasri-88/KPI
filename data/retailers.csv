@@ -1,0 +1,121 @@
+retailer_id,retailer_name,store_type,city,state,region,latitude,longitude,prosperity_index,premiumness_index,store_size_sqft
+1,Kolkata Hypermarket 1,Hypermarket,Kolkata,West Bengal,East,22.54076,88.354261,0.753,0.765,1500
+2,Lucknow Wholesale 2,Wholesale,Lucknow,Uttar Pradesh,North,26.894606,80.901953,0.484,0.412,800
+3,Chennai Hypermarket 3,Hypermarket,Chennai,Tamil Nadu,South,13.113021,80.285345,0.909,0.906,10000
+4,Lucknow Convenience Store 4,Convenience Store,Lucknow,Uttar Pradesh,North,26.889781,80.948823,0.551,0.472,800
+5,Kolkata Kirana Store 5,Kirana Store,Kolkata,West Bengal,East,22.572418,88.384051,0.617,0.59,1500
+6,Lucknow Premium Outlet 6,Premium Outlet,Lucknow,Uttar Pradesh,North,26.856439,80.90271,0.703,0.719,400
+7,Mumbai Hypermarket 7,Hypermarket,Mumbai,Maharashtra,West,19.102031,72.849103,0.956,0.958,1500
+8,Chennai Convenience Store 8,Convenience Store,Chennai,Tamil Nadu,South,13.112801,80.283192,0.787,0.743,5000
+9,Jaipur Kirana Store 9,Kirana Store,Jaipur,Rajasthan,North,26.855209,75.845192,0.502,0.505,5000
+10,Mumbai Kirana Store 10,Kirana Store,Mumbai,Maharashtra,West,19.200847,72.942442,0.721,0.702,400
+11,Delhi Kirana Store 11,Kirana Store,Delhi,Delhi,North,28.644712,77.122878,0.655,0.59,800
+12,Delhi Premium Outlet 12,Premium Outlet,Delhi,Delhi,North,28.671179,77.292747,0.934,0.947,800
+13,Pune Wholesale 13,Wholesale,Pune,Maharashtra,West,18.565737,73.935777,0.663,0.691,1500
+14,Bangalore Premium Outlet 14,Premium Outlet,Bangalore,Karnataka,South,12.915199,77.653592,0.927,0.917,800
+15,Lucknow Wholesale 15,Wholesale,Lucknow,Uttar Pradesh,North,26.880553,80.979623,0.524,0.482,1500
+16,Hyderabad Supermarket 16,Supermarket,Hyderabad,Telangana,South,17.356896,78.497131,0.835,0.847,200
+17,Kolkata Hypermarket 17,Hypermarket,Kolkata,West Bengal,East,22.596079,88.363559,0.859,0.805,5000
+18,Jaipur Wholesale 18,Wholesale,Jaipur,Rajasthan,North,26.946547,75.777008,0.549,0.518,10000
+19,Lucknow Supermarket 19,Supermarket,Lucknow,Uttar Pradesh,North,26.82684,80.985171,0.593,0.558,10000
+20,Ahmedabad Convenience Store 20,Convenience Store,Ahmedabad,Gujarat,West,23.056985,72.600228,0.587,0.599,400
+21,Ahmedabad Convenience Store 21,Convenience Store,Ahmedabad,Gujarat,West,23.021212,72.619675,0.619,0.6,800
+22,Jaipur Supermarket 22,Supermarket,Jaipur,Rajasthan,North,26.851015,75.844806,0.616,0.574,3000
+23,Bangalore Hypermarket 23,Hypermarket,Bangalore,Karnataka,South,13.038122,77.646885,0.925,0.789,800
+24,Bangalore Premium Outlet 24,Premium Outlet,Bangalore,Karnataka,South,12.98088,77.586496,0.993,0.938,3000
+25,Hyderabad Convenience Store 25,Convenience Store,Hyderabad,Telangana,South,17.39255,78.51189,0.681,0.641,800
+26,Chennai Convenience Store 26,Convenience Store,Chennai,Tamil Nadu,South,13.034581,80.272128,0.682,0.653,10000
+27,Delhi Convenience Store 27,Convenience Store,Delhi,Delhi,North,28.588308,77.247721,0.828,0.866,3000
+28,Lucknow Kirana Store 28,Kirana Store,Lucknow,Uttar Pradesh,North,26.8283,80.910053,0.446,0.411,800
+29,Mumbai Supermarket 29,Supermarket,Mumbai,Maharashtra,West,19.191604,72.818987,0.985,0.946,5000
+30,Delhi Supermarket 30,Supermarket,Delhi,Delhi,North,28.677574,77.250558,0.946,0.913,1500
+31,Ahmedabad Supermarket 31,Supermarket,Ahmedabad,Gujarat,West,23.044047,72.527655,0.684,0.699,200
+32,Pune Premium Outlet 32,Premium Outlet,Pune,Maharashtra,West,18.530141,73.764816,0.954,0.84,10000
+33,Lucknow Kirana Store 33,Kirana Store,Lucknow,Uttar Pradesh,North,26.894913,80.908518,0.43,0.431,3000
+34,Lucknow Wholesale 34,Wholesale,Lucknow,Uttar Pradesh,North,26.879074,80.922569,0.484,0.499,800
+35,Lucknow Wholesale 35,Wholesale,Lucknow,Uttar Pradesh,North,26.899003,80.930538,0.452,0.471,200
+36,Bangalore Supermarket 36,Supermarket,Bangalore,Karnataka,South,13.025103,77.589697,0.792,0.701,200
+37,Delhi Wholesale 37,Wholesale,Delhi,Delhi,North,28.550535,77.190101,0.7,0.6,800
+38,Chennai Premium Outlet 38,Premium Outlet,Chennai,Tamil Nadu,South,13.105448,80.245403,0.893,0.806,10000
+39,Lucknow Hypermarket 39,Hypermarket,Lucknow,Uttar Pradesh,North,26.866118,80.993367,0.629,0.563,400
+40,Chennai Kirana Store 40,Kirana Store,Chennai,Tamil Nadu,South,13.123995,80.207141,0.651,0.631,10000
+41,Lucknow Hypermarket 41,Hypermarket,Lucknow,Uttar Pradesh,North,26.892119,80.943915,0.708,0.701,800
+42,Jaipur Wholesale 42,Wholesale,Jaipur,Rajasthan,North,26.903998,75.793776,0.472,0.442,800
+43,Lucknow Premium Outlet 43,Premium Outlet,Lucknow,Uttar Pradesh,North,26.825037,80.909133,0.761,0.734,200
+44,Chennai Kirana Store 44,Kirana Store,Chennai,Tamil Nadu,South,13.086437,80.276311,0.611,0.599,800
+45,Delhi Hypermarket 45,Hypermarket,Delhi,Delhi,North,28.749389,77.187177,1.0,0.944,1500
+46,Hyderabad Kirana Store 46,Kirana Store,Hyderabad,Telangana,South,17.382106,78.41569,0.565,0.559,800
+47,Kolkata Hypermarket 47,Hypermarket,Kolkata,West Bengal,East,22.581357,88.35501,0.757,0.682,200
+48,Kolkata Supermarket 48,Supermarket,Kolkata,West Bengal,East,22.586491,88.382493,0.774,0.742,1500
+49,Mumbai Hypermarket 49,Hypermarket,Mumbai,Maharashtra,West,19.087517,72.854267,1.0,1.0,400
+50,Chennai Hypermarket 50,Hypermarket,Chennai,Tamil Nadu,South,13.082383,80.292767,0.971,0.919,200
+51,Lucknow Convenience Store 51,Convenience Store,Lucknow,Uttar Pradesh,North,26.879931,80.970978,0.564,0.542,200
+52,Bangalore Hypermarket 52,Hypermarket,Bangalore,Karnataka,South,13.098451,77.686939,1.0,0.98,400
+53,Ahmedabad Premium Outlet 53,Premium Outlet,Ahmedabad,Gujarat,West,23.093265,72.543779,0.79,0.803,1500
+54,Bangalore Kirana Store 54,Kirana Store,Bangalore,Karnataka,South,12.991357,77.571696,0.691,0.658,400
+55,Pune Hypermarket 55,Hypermarket,Pune,Maharashtra,West,18.505249,73.908001,0.852,0.858,800
+56,Mumbai Wholesale 56,Wholesale,Mumbai,Maharashtra,West,19.106568,72.844783,0.732,0.719,10000
+57,Delhi Convenience Store 57,Convenience Store,Delhi,Delhi,North,28.639309,77.196868,0.8,0.767,1500
+58,Hyderabad Kirana Store 58,Kirana Store,Hyderabad,Telangana,South,17.43696,78.547116,0.593,0.532,10000
+59,Kolkata Premium Outlet 59,Premium Outlet,Kolkata,West Bengal,East,22.504365,88.374471,0.934,0.865,5000
+60,Delhi Wholesale 60,Wholesale,Delhi,Delhi,North,28.649066,77.107404,0.77,0.706,200
+61,Ahmedabad Supermarket 61,Supermarket,Ahmedabad,Gujarat,West,23.009971,72.636566,0.752,0.701,5000
+62,Delhi Convenience Store 62,Convenience Store,Delhi,Delhi,North,28.564966,77.256305,0.766,0.757,5000
+63,Pune Wholesale 63,Wholesale,Pune,Maharashtra,West,18.620353,73.920468,0.625,0.571,5000
+64,Ahmedabad Supermarket 64,Supermarket,Ahmedabad,Gujarat,West,23.087238,72.505385,0.682,0.673,800
+65,Bangalore Supermarket 65,Supermarket,Bangalore,Karnataka,South,13.049353,77.615096,0.894,0.886,200
+66,Ahmedabad Supermarket 66,Supermarket,Ahmedabad,Gujarat,West,23.016636,72.54492,0.655,0.661,800
+67,Hyderabad Wholesale 67,Wholesale,Hyderabad,Telangana,South,17.387484,78.421835,0.613,0.605,400
+68,Delhi Hypermarket 68,Hypermarket,Delhi,Delhi,North,28.585014,77.221898,0.991,0.89,3000
+69,Delhi Hypermarket 69,Hypermarket,Delhi,Delhi,North,28.596438,77.227581,0.921,0.785,10000
+70,Ahmedabad Kirana Store 70,Kirana Store,Ahmedabad,Gujarat,West,23.090121,72.601642,0.494,0.513,3000
+71,Chennai Convenience Store 71,Convenience Store,Chennai,Tamil Nadu,South,13.095841,80.242431,0.732,0.666,1500
+72,Ahmedabad Convenience Store 72,Convenience Store,Ahmedabad,Gujarat,West,23.010665,72.557205,0.658,0.69,800
+73,Mumbai Convenience Store 73,Convenience Store,Mumbai,Maharashtra,West,19.245589,72.898734,0.73,0.747,10000
+74,Mumbai Convenience Store 74,Convenience Store,Mumbai,Maharashtra,West,19.232123,72.911776,0.855,0.766,10000
+75,Hyderabad Convenience Store 75,Convenience Store,Hyderabad,Telangana,South,17.3719,78.42852,0.727,0.723,5000
+76,Delhi Premium Outlet 76,Premium Outlet,Delhi,Delhi,North,28.67565,77.280681,0.919,0.926,200
+77,Lucknow Convenience Store 77,Convenience Store,Lucknow,Uttar Pradesh,North,26.836486,80.913141,0.539,0.503,400
+78,Delhi Convenience Store 78,Convenience Store,Delhi,Delhi,North,28.707303,77.275292,0.797,0.823,10000
+79,Delhi Hypermarket 79,Hypermarket,Delhi,Delhi,North,28.601394,77.264938,1.0,0.909,10000
+80,Hyderabad Supermarket 80,Supermarket,Hyderabad,Telangana,South,17.430423,78.47025,0.724,0.755,10000
+81,Kolkata Convenience Store 81,Convenience Store,Kolkata,West Bengal,East,22.596727,88.380459,0.62,0.576,800
+82,Jaipur Premium Outlet 82,Premium Outlet,Jaipur,Rajasthan,North,26.862359,75.786859,0.773,0.747,10000
+83,Hyderabad Supermarket 83,Supermarket,Hyderabad,Telangana,South,17.360835,78.435073,0.799,0.83,800
+84,Lucknow Hypermarket 84,Hypermarket,Lucknow,Uttar Pradesh,North,26.822137,80.906322,0.738,0.672,1500
+85,Pune Convenience Store 85,Convenience Store,Pune,Maharashtra,West,18.477955,73.939252,0.791,0.691,400
+86,Jaipur Premium Outlet 86,Premium Outlet,Jaipur,Rajasthan,North,26.863566,75.795364,0.815,0.806,3000
+87,Kolkata Hypermarket 87,Hypermarket,Kolkata,West Bengal,East,22.558734,88.37266,0.851,0.865,3000
+88,Kolkata Premium Outlet 88,Premium Outlet,Kolkata,West Bengal,East,22.593905,88.327974,0.84,0.788,400
+89,Hyderabad Wholesale 89,Wholesale,Hyderabad,Telangana,South,17.359935,78.502852,0.674,0.66,200
+90,Kolkata Hypermarket 90,Hypermarket,Kolkata,West Bengal,East,22.527588,88.396821,0.758,0.676,5000
+91,Lucknow Convenience Store 91,Convenience Store,Lucknow,Uttar Pradesh,North,26.897109,80.905058,0.529,0.463,3000
+92,Bangalore Kirana Store 92,Kirana Store,Bangalore,Karnataka,South,12.913722,77.664774,0.649,0.657,400
+93,Hyderabad Wholesale 93,Wholesale,Hyderabad,Telangana,South,17.427437,78.518297,0.562,0.574,400
+94,Delhi Supermarket 94,Supermarket,Delhi,Delhi,North,28.658043,77.259703,0.908,0.776,200
+95,Hyderabad Convenience Store 95,Convenience Store,Hyderabad,Telangana,South,17.428998,78.43569,0.634,0.573,400
+96,Kolkata Hypermarket 96,Hypermarket,Kolkata,West Bengal,East,22.552609,88.374567,0.816,0.753,3000
+97,Pune Wholesale 97,Wholesale,Pune,Maharashtra,West,18.540401,73.79431,0.582,0.586,10000
+98,Jaipur Supermarket 98,Supermarket,Jaipur,Rajasthan,North,26.880163,75.814334,0.593,0.561,1500
+99,Kolkata Hypermarket 99,Hypermarket,Kolkata,West Bengal,East,22.56861,88.349027,0.755,0.654,3000
+100,Delhi Premium Outlet 100,Premium Outlet,Delhi,Delhi,North,28.563136,77.155003,1.0,0.992,1500
+101,Lucknow Wholesale 101,Wholesale,Lucknow,Uttar Pradesh,North,26.853056,80.945372,0.489,0.493,200
+102,Jaipur Hypermarket 102,Hypermarket,Jaipur,Rajasthan,North,26.922084,75.771502,0.77,0.718,10000
+103,Ahmedabad Convenience Store 103,Convenience Store,Ahmedabad,Gujarat,West,23.039873,72.609442,0.639,0.628,800
+104,Delhi Supermarket 104,Supermarket,Delhi,Delhi,North,28.687364,77.194854,0.938,0.815,200
+105,Hyderabad Wholesale 105,Wholesale,Hyderabad,Telangana,South,17.431177,78.483456,0.681,0.655,5000
+106,Pune Hypermarket 106,Hypermarket,Pune,Maharashtra,West,18.532162,73.924721,0.945,0.94,800
+107,Lucknow Wholesale 107,Wholesale,Lucknow,Uttar Pradesh,North,26.831245,80.91036,0.468,0.459,400
+108,Pune Supermarket 108,Supermarket,Pune,Maharashtra,West,18.520023,73.861253,0.842,0.812,10000
+109,Kolkata Wholesale 109,Wholesale,Kolkata,West Bengal,East,22.584516,88.397455,0.614,0.601,200
+110,Lucknow Convenience Store 110,Convenience Store,Lucknow,Uttar Pradesh,North,26.892908,80.982946,0.505,0.457,10000
+111,Chennai Kirana Store 111,Kirana Store,Chennai,Tamil Nadu,South,13.138231,80.235102,0.66,0.636,1500
+112,Pune Supermarket 112,Supermarket,Pune,Maharashtra,West,18.478375,73.876634,0.735,0.703,1500
+113,Kolkata Convenience Store 113,Convenience Store,Kolkata,West Bengal,East,22.545365,88.315741,0.705,0.709,3000
+114,Lucknow Kirana Store 114,Kirana Store,Lucknow,Uttar Pradesh,North,26.808496,80.905261,0.489,0.421,200
+115,Chennai Wholesale 115,Wholesale,Chennai,Tamil Nadu,South,13.066467,80.242401,0.648,0.586,10000
+116,Jaipur Convenience Store 116,Convenience Store,Jaipur,Rajasthan,North,26.861382,75.792991,0.606,0.587,3000
+117,Chennai Wholesale 117,Wholesale,Chennai,Tamil Nadu,South,13.006813,80.239526,0.598,0.533,400
+118,Delhi Supermarket 118,Supermarket,Delhi,Delhi,North,28.702832,77.157889,0.793,0.793,400
+119,Delhi Wholesale 119,Wholesale,Delhi,Delhi,North,28.626041,77.240734,0.712,0.7,800
+120,Pune Hypermarket 120,Hypermarket,Pune,Maharashtra,West,18.529414,73.898408,0.795,0.822,10000

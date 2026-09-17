@@ -1,0 +1,81 @@
+product_id,sku_code,product_name,category,sub_category,brand,unit_price,cost_price,must_sell_flag,launch_date
+1,SKU-BEV-SOF-001,P&G Soft Drinks Classic 1kg,Beverages,Soft Drinks,P&G,152.01,90.39,False,2023-11-24
+2,SKU-BEV-SOF-002,Colgate Soft Drinks Classic 250g,Beverages,Soft Drinks,Colgate,222.52,123.71,True,2023-06-02
+3,SKU-BEV-SOF-003,Marico Soft Drinks Classic 250g,Beverages,Soft Drinks,Marico,115.44,78.5,False,2022-08-14
+4,SKU-BEV-SOF-004,Amul Soft Drinks Gold 1L,Beverages,Soft Drinks,Amul,408.53,225.22,False,2023-03-09
+5,SKU-BEV-JUI-001,Dabur Juices Lite 500ml,Beverages,Juices,Dabur,123.35,86.68,True,2023-01-25
+6,SKU-BEV-JUI-002,P&G Juices Lite 1L,Beverages,Juices,P&G,309.79,220.39,False,2023-07-04
+7,SKU-BEV-JUI-003,P&G Juices Max 200ml,Beverages,Juices,P&G,284.98,204.01,False,2023-01-06
+8,SKU-BEV-JUI-004,Marico Juices Premium 1kg,Beverages,Juices,Marico,53.39,36.43,False,2022-03-23
+9,SKU-BEV-BOT-001,PepsiCo Bottled Water Classic 100g,Beverages,Bottled Water,PepsiCo,153.43,103.89,False,2023-01-15
+10,SKU-BEV-BOT-002,Dabur Bottled Water Premium 1kg,Beverages,Bottled Water,Dabur,148.15,109.24,False,2023-09-16
+11,SKU-BEV-BOT-003,Nestle Bottled Water Gold 1kg,Beverages,Bottled Water,Nestle,137.51,88.34,True,2023-10-18
+12,SKU-BEV-BOT-004,Colgate Bottled Water Premium 1kg,Beverages,Bottled Water,Colgate,175.66,123.61,True,2022-02-02
+13,SKU-BEV-ENE-001,Dabur Energy Drinks Max 1L,Beverages,Energy Drinks,Dabur,51.77,37.93,False,2022-11-19
+14,SKU-BEV-ENE-002,PepsiCo Energy Drinks Natural 100g,Beverages,Energy Drinks,PepsiCo,209.9,153.84,False,2022-09-29
+15,SKU-BEV-ENE-003,Nestle Energy Drinks Premium 1kg,Beverages,Energy Drinks,Nestle,289.46,174.41,False,2023-08-21
+16,SKU-BEV-ENE-004,Britannia Energy Drinks Lite 500ml,Beverages,Energy Drinks,Britannia,498.72,288.09,False,2022-02-18
+17,SKU-SNA-CHI-001,P&G Chips Premium 1kg,Snacks,Chips,P&G,96.79,66.41,False,2023-01-30
+18,SKU-SNA-CHI-002,Britannia Chips Gold 100g,Snacks,Chips,Britannia,273.97,203.89,False,2022-01-12
+19,SKU-SNA-CHI-003,P&G Chips Natural 250g,Snacks,Chips,P&G,380.42,267.71,False,2022-10-28
+20,SKU-SNA-CHI-004,Britannia Chips Premium 100g,Snacks,Chips,Britannia,21.56,14.97,False,2023-05-28
+21,SKU-SNA-BIS-001,Nestle Biscuits Gold 200ml,Snacks,Biscuits,Nestle,437.85,266.95,False,2023-09-16
+22,SKU-SNA-BIS-002,PepsiCo Biscuits Premium 1L,Snacks,Biscuits,PepsiCo,386.01,253.95,False,2023-06-28
+23,SKU-SNA-BIS-003,HUL Biscuits Gold 1L,Snacks,Biscuits,HUL,254.53,145.69,False,2022-11-11
+24,SKU-SNA-BIS-004,PepsiCo Biscuits Classic 500ml,Snacks,Biscuits,PepsiCo,441.44,326.4,True,2023-05-13
+25,SKU-SNA-NAM-001,P&G Namkeen Gold 500ml,Snacks,Namkeen,P&G,81.63,52.66,False,2022-09-29
+26,SKU-SNA-NAM-002,Colgate Namkeen Gold 100g,Snacks,Namkeen,Colgate,482.89,355.3,False,2022-07-25
+27,SKU-SNA-NAM-003,ITC Namkeen Max 1kg,Snacks,Namkeen,ITC,331.94,211.65,False,2022-05-04
+28,SKU-SNA-NAM-004,PepsiCo Namkeen Premium 200ml,Snacks,Namkeen,PepsiCo,182.28,121.7,True,2022-08-14
+29,SKU-SNA-CHO-001,HUL Chocolates Classic 1kg,Snacks,Chocolates,HUL,322.93,192.4,False,2022-12-05
+30,SKU-SNA-CHO-002,P&G Chocolates Gold 500ml,Snacks,Chocolates,P&G,153.67,99.44,False,2023-08-08
+31,SKU-SNA-CHO-003,Marico Chocolates Max 500ml,Snacks,Chocolates,Marico,396.62,282.19,True,2022-04-10
+32,SKU-SNA-CHO-004,Britannia Chocolates Lite 100g,Snacks,Chocolates,Britannia,217.33,157.08,True,2023-11-01
+33,SKU-DAI-MIL-001,P&G Milk Classic 100g,Dairy,Milk,P&G,369.54,262.42,True,2022-07-16
+34,SKU-DAI-MIL-002,PepsiCo Milk Gold 100g,Dairy,Milk,PepsiCo,87.29,51.21,False,2022-03-19
+35,SKU-DAI-MIL-003,Amul Milk Gold 200ml,Dairy,Milk,Amul,44.28,33.2,False,2022-04-06
+36,SKU-DAI-MIL-004,PepsiCo Milk Premium 100g,Dairy,Milk,PepsiCo,253.11,150.03,False,2022-03-02
+37,SKU-DAI-YOG-001,Nestle Yogurt Max 200ml,Dairy,Yogurt,Nestle,492.95,297.27,False,2023-04-11
+38,SKU-DAI-YOG-002,ITC Yogurt Max 1kg,Dairy,Yogurt,ITC,479.51,359.19,False,2023-05-14
+39,SKU-DAI-YOG-003,Nestle Yogurt Premium 1L,Dairy,Yogurt,Nestle,124.5,69.93,False,2022-03-04
+40,SKU-DAI-YOG-004,Dabur Yogurt Classic 200ml,Dairy,Yogurt,Dabur,300.41,195.44,False,2022-06-11
+41,SKU-DAI-CHE-001,HUL Cheese Gold 200ml,Dairy,Cheese,HUL,428.64,241.63,True,2022-08-29
+42,SKU-DAI-CHE-002,Britannia Cheese Classic 250g,Dairy,Cheese,Britannia,138.18,92.43,False,2023-03-06
+43,SKU-DAI-CHE-003,Marico Cheese Gold 250g,Dairy,Cheese,Marico,171.86,103.49,False,2022-11-18
+44,SKU-DAI-CHE-004,PepsiCo Cheese Lite 100g,Dairy,Cheese,PepsiCo,82.82,56.24,False,2022-03-16
+45,SKU-DAI-BUT-001,HUL Butter Max 250g,Dairy,Butter,HUL,499.26,374.06,True,2022-08-07
+46,SKU-DAI-BUT-002,Colgate Butter Lite 500ml,Dairy,Butter,Colgate,467.96,339.82,False,2023-01-14
+47,SKU-DAI-BUT-003,ITC Butter Premium 100g,Dairy,Butter,ITC,420.2,290.24,False,2023-11-01
+48,SKU-DAI-BUT-004,Colgate Butter Classic 1kg,Dairy,Butter,Colgate,412.21,251.4,False,2022-05-18
+49,SKU-PER-SHA-001,ITC Shampoo Classic 200ml,Personal Care,Shampoo,ITC,376.36,218.7,True,2022-08-04
+50,SKU-PER-SHA-002,Dabur Shampoo Premium 1kg,Personal Care,Shampoo,Dabur,324.43,195.57,False,2022-02-22
+51,SKU-PER-SHA-003,P&G Shampoo Natural 100g,Personal Care,Shampoo,P&G,418.09,233.64,False,2022-05-14
+52,SKU-PER-SHA-004,ITC Shampoo Premium 1kg,Personal Care,Shampoo,ITC,232.08,160.4,False,2022-04-25
+53,SKU-PER-SOA-001,P&G Soap Natural 500ml,Personal Care,Soap,P&G,281.88,202.09,False,2022-06-01
+54,SKU-PER-SOA-002,Britannia Soap Premium 200ml,Personal Care,Soap,Britannia,167.96,122.58,False,2022-02-10
+55,SKU-PER-SOA-003,Dabur Soap Premium 1kg,Personal Care,Soap,Dabur,139.77,79.75,False,2023-02-21
+56,SKU-PER-SOA-004,Marico Soap Natural 500ml,Personal Care,Soap,Marico,464.37,277.39,True,2022-07-01
+57,SKU-PER-TOO-001,Britannia Toothpaste Classic 500ml,Personal Care,Toothpaste,Britannia,373.55,230.27,False,2023-11-17
+58,SKU-PER-TOO-002,PepsiCo Toothpaste Lite 500ml,Personal Care,Toothpaste,PepsiCo,397.94,227.47,False,2023-04-27
+59,SKU-PER-TOO-003,PepsiCo Toothpaste Premium 100g,Personal Care,Toothpaste,PepsiCo,187.84,134.14,False,2022-08-17
+60,SKU-PER-TOO-004,HUL Toothpaste Natural 500ml,Personal Care,Toothpaste,HUL,211.26,127.96,True,2022-10-13
+61,SKU-PER-FAC-001,Dabur Face Cream Natural 250g,Personal Care,Face Cream,Dabur,211.85,158.09,False,2022-01-29
+62,SKU-PER-FAC-002,P&G Face Cream Lite 500ml,Personal Care,Face Cream,P&G,298.68,223.03,True,2023-09-03
+63,SKU-PER-FAC-003,Britannia Face Cream Lite 1kg,Personal Care,Face Cream,Britannia,397.49,253.31,False,2022-04-29
+64,SKU-PER-FAC-004,Britannia Face Cream Gold 500ml,Personal Care,Face Cream,Britannia,142.27,98.42,True,2023-07-06
+65,SKU-HOM-DET-001,PepsiCo Detergent Lite 100g,Home Care,Detergent,PepsiCo,53.59,36.59,False,2022-11-18
+66,SKU-HOM-DET-002,P&G Detergent Natural 1L,Home Care,Detergent,P&G,263.42,180.02,False,2022-10-30
+67,SKU-HOM-DET-003,Colgate Detergent Premium 500ml,Home Care,Detergent,Colgate,221.81,163.71,False,2022-06-28
+68,SKU-HOM-DET-004,Marico Detergent Gold 1L,Home Care,Detergent,Marico,214.92,154.04,False,2022-08-04
+69,SKU-HOM-FLO-001,Britannia Floor Cleaner Gold 250g,Home Care,Floor Cleaner,Britannia,334.26,214.93,False,2022-08-07
+70,SKU-HOM-FLO-002,Colgate Floor Cleaner Max 1kg,Home Care,Floor Cleaner,Colgate,101.45,57.52,False,2023-10-11
+71,SKU-HOM-FLO-003,Marico Floor Cleaner Lite 200ml,Home Care,Floor Cleaner,Marico,412.84,289.08,False,2022-08-19
+72,SKU-HOM-FLO-004,PepsiCo Floor Cleaner Premium 200ml,Home Care,Floor Cleaner,PepsiCo,42.18,31.5,False,2022-03-16
+73,SKU-HOM-DIS-001,Amul Dishwash Max 1kg,Home Care,Dishwash,Amul,296.32,205.55,False,2023-02-14
+74,SKU-HOM-DIS-002,PepsiCo Dishwash Premium 1kg,Home Care,Dishwash,PepsiCo,350.06,255.03,False,2022-04-20
+75,SKU-HOM-DIS-003,Britannia Dishwash Premium 500ml,Home Care,Dishwash,Britannia,405.97,279.79,False,2023-07-25
+76,SKU-HOM-DIS-004,PepsiCo Dishwash Classic 100g,Home Care,Dishwash,PepsiCo,84.0,54.01,False,2023-07-27
+77,SKU-HOM-AIR-001,Marico Air Freshener Lite 100g,Home Care,Air Freshener,Marico,314.07,217.92,False,2023-07-16
+78,SKU-HOM-AIR-002,Amul Air Freshener Premium 1kg,Home Care,Air Freshener,Amul,433.52,277.46,False,2023-10-15
+79,SKU-HOM-AIR-003,ITC Air Freshener Gold 100g,Home Care,Air Freshener,ITC,320.84,194.08,True,2022-10-20
+80,SKU-HOM-AIR-004,PepsiCo Air Freshener Lite 1L,Home Care,Air Freshener,PepsiCo,173.46,114.14,True,2022-08-25
