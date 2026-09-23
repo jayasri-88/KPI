@@ -197,12 +197,6 @@ def seed_analytics_data(session):
         "chips_id": p_chips.id,
     }
 
-
-@pytest.fixture()
-def seeded(db_session, clean_tables):
-    return seed_analytics_data(db_session)
-
-
 class TestSalesTrend:
     def test_monthly_grouping_and_aggregation(self, service_sessions, seeded):
         trend = analytics_service.get_sales_trend()
@@ -243,9 +237,27 @@ class TestDashboardOverview:
 
         assert overview["monthly_sales"] == [
             # Jan: items of O1 (190) + O2 (50); 2 distinct orders; 3 units
-            {"month": "2026-01", "revenue": 240.0, "transactions": 2, "units": 3},
+            # net = 190*0.95 + 50 = 230.5; profit = 2*40 + 1*20 = 100
+            {
+                "month": "2026-01",
+                "revenue": 240.0,
+                "net_revenue": 230.5,
+                "profit": 100.0,
+                "transactions": 2,
+                "units": 3,
+                "aov": 120.0,
+            },
             # Feb: item of O3 (95); 1 distinct order; 1 unit
-            {"month": "2026-02", "revenue": 95.0, "transactions": 1, "units": 1},
+            # net = 95*0.95 = 90.25; profit = 1*40 = 40
+            {
+                "month": "2026-02",
+                "revenue": 95.0,
+                "net_revenue": 90.25,
+                "profit": 40.0,
+                "transactions": 1,
+                "units": 1,
+                "aov": 95.0,
+            },
         ]
 
 
@@ -254,18 +266,20 @@ class TestCategoryPerformance:
         result = analytics_service.get_category_performance()
 
         assert result == [
-            # Beverages: 190 + 95 across 2 distinct orders
+            # Beverages: 190 + 95 across 2 distinct orders; profit 3x40 = 120
             {
                 "category": "Beverages",
                 "revenue": 285.0,
                 "units": 3,
                 "transactions": 2,
+                "profit": 120.0,
             },
             {
                 "category": "Snacks",
                 "revenue": 50.0,
                 "units": 1,
                 "transactions": 1,
+                "profit": 20.0,
             },
         ]
 
@@ -295,6 +309,10 @@ class TestSkuPerformance:
         assert chips["revenue"] == 50.0
         assert chips["avg_discount"] == 0.0
         assert chips["transactions"] == 1
+
+        # profit: cola 3x(100-60)=120; chips 1x(50-30)=20
+        assert cola["profit"] == 120.0
+        assert chips["profit"] == 20.0
 
     def test_ordered_by_revenue_desc(self, service_sessions, seeded):
         result = analytics_service.get_sku_performance()

@@ -1,8 +1,23 @@
+"""Analytics KPI service.
+
+Business definitions (see dashboard_service for the shared rule set):
+
+* revenue      = SUM(order_items.total_price)                [GROSS]
+* transactions = COUNT(DISTINCT orders.id)                   [line-joined]
+* cancelled    = Orders with status 'cancelled' excluded from all
+                 order-derived KPIs (same documented rule as dashboard).
+* profit       = SUM(quantity * (unit_price - product.cost_price)) [GROSS margin]
+* The `sales` fact table has no status column; the source pipeline only
+  produces completed transactions (validated during ingestion), so
+  sales-trend is treated as all-valid and needs no cancellation filter.
+"""
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from app.database import SessionLocal
 from app.models import Product, OrderItem, Store, Order, Sales, Category
+
+CANCELLED = "cancelled"
 
 
 def get_sales_trend() -> list:
@@ -19,7 +34,7 @@ def get_sales_trend() -> list:
             .order_by(func.to_char(Sales.date, 'YYYY-MM'))
             .all()
         )
-        
+
         return [
             {
                 "month": row.month,
@@ -42,21 +57,27 @@ def get_category_performance() -> list:
                 func.sum(OrderItem.total_price).label("revenue"),
                 func.sum(OrderItem.quantity).label("units"),
                 func.count(func.distinct(Order.id)).label("transactions"),
+                func.sum(
+                    OrderItem.quantity
+                    * (OrderItem.unit_price - func.coalesce(Product.cost_price, 0.0))
+                ).label("profit"),
             )
             .join(Product, Product.category_id == Category.id)
             .join(OrderItem, Product.id == OrderItem.product_id)
             .join(Order, OrderItem.order_id == Order.id)
+            .filter(Order.status != CANCELLED)
             .group_by(Category.id, Category.name)
             .order_by(func.sum(OrderItem.total_price).desc())
             .all()
         )
-        
+
         return [
             {
                 "category": row.category or "Uncategorized",
                 "revenue": round(float(row.revenue), 2) if row.revenue else 0,
                 "units": int(row.units) if row.units else 0,
                 "transactions": int(row.transactions) if row.transactions else 0,
+                "profit": round(float(row.profit), 2) if row.profit else 0,
             }
             for row in results
         ]
@@ -77,15 +98,25 @@ def get_sku_performance() -> list:
                 func.sum(OrderItem.total_price).label("revenue"),
                 func.avg(OrderItem.discount_percent).label("avg_discount"),
                 func.count(func.distinct(Order.id)).label("transactions"),
+                func.sum(
+                    OrderItem.quantity
+                    * (OrderItem.unit_price - func.coalesce(Product.cost_price, 0.0))
+                ).label("profit"),
             )
             .join(Product, OrderItem.product_id == Product.id)
             .join(Order, OrderItem.order_id == Order.id)
             .outerjoin(Category, Product.category_id == Category.id)
-            .group_by(OrderItem.product_id, Product.sku_code, Product.product_name, Category.name)
+            .filter(Order.status != CANCELLED)
+            .group_by(
+                OrderItem.product_id,
+                Product.sku_code,
+                Product.product_name,
+                Category.name,
+            )
             .order_by(func.sum(OrderItem.total_price).desc())
             .all()
         )
-        
+
         return [
             {
                 "product_id": str(row.product_id) if row.product_id else "",
@@ -96,6 +127,7 @@ def get_sku_performance() -> list:
                 "units": int(row.units) if row.units else 0,
                 "transactions": int(row.transactions) if row.transactions else 0,
                 "avg_discount": round(float(row.avg_discount), 2) if row.avg_discount else 0,
+                "profit": round(float(row.profit), 2) if row.profit else 0,
             }
             for row in results
         ]
@@ -116,11 +148,12 @@ def get_region_performance() -> list:
             )
             .join(Order, Store.id == Order.store_id)
             .join(OrderItem, Order.id == OrderItem.order_id)
+            .filter(Order.status != CANCELLED)
             .group_by(Store.region)
             .order_by(func.sum(OrderItem.total_price).desc())
             .all()
         )
-        
+
         return [
             {
                 "region": row.region or "Unknown",

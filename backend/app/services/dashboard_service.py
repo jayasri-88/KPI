@@ -1,112 +1,222 @@
+"""Dashboard KPI service.
+
+Business definitions (documented per senior-engineering rules; where the
+repository defined no explicit rule, the choice below is the documented
+rule):
+
+* revenue            = SUM(order_items.total_price)   [GROSS, pre-discount:
+                       matches the source `sales_transactions.revenue`
+                       convention verified during ingestion]
+* net revenue        = revenue - SUM(order discount)  [derived]
+* units              = SUM(order_items.quantity)
+* transactions       = orders with >= 1 line          [not a bare row count:
+                       line-less orders are excluded everywhere]
+* cancelled orders   = Orders with status = 'cancelled' are excluded from
+                       ALL monetary and count KPIs. (No product spec defines
+                       this; excluding cancelled sales is the reasonable
+                       retail rule and is covered by tests.)
+* avg_discount       = simple mean of line discount_percent
+* profit             = SUM(quantity * (unit_price - product.cost_price))
+                       [GROSS-margin convention, consistent with revenue;
+                       excludes shipping/fees, which the schema lacks]
+* AOV                = revenue / transactions         [None if no orders]
+* revenue growth     = (last_month - prev_month) / prev_month, on monthly
+                       revenue series                  [None if not computable]
+* category/region
+  contribution       = category|region revenue / total revenue
+"""
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from app.database import SessionLocal
-from app.models import OrderItem, Order, Product, Store
+from app.models import Category, OrderItem, Order, Product, Store
+
+CANCELLED = "cancelled"
+
+
+def _base_order_filters():
+    """Filters every order-derived KPI must apply (business rule)."""
+    return [Order.status != CANCELLED]
 
 
 def get_dashboard_overview() -> dict:
     db = SessionLocal()
     try:
-        # Total revenue from order_items
-        total_revenue_result = db.query(func.sum(OrderItem.total_price)).scalar()
-        total_revenue = float(total_revenue_result) if total_revenue_result else 0.0
-        
-        # Total orders
-        total_orders = db.query(func.count(Order.id)).scalar()
-        
-        # Total items sold
-        total_units_result = db.query(func.sum(OrderItem.quantity)).scalar()
-        total_units = int(total_units_result) if total_units_result else 0
-        
-        # Total transactions (distinct orders)
-        total_transactions = int(total_orders) if total_orders else 0
-        
-        # Average discount
-        avg_discount_result = db.query(func.avg(OrderItem.discount_percent)).scalar()
-        avg_discount = round(float(avg_discount_result), 2) if avg_discount_result else 0.0
-        
-        # Total products
+        cancelled = _base_order_filters()
+
+        # ---- Core KPIs over order lines (cancelled orders excluded) ----
+        row = (
+            db.query(
+                func.coalesce(func.sum(OrderItem.total_price), 0.0).label("revenue"),
+                func.coalesce(func.sum(OrderItem.quantity), 0).label("units"),
+                func.count(func.distinct(OrderItem.order_id)).label("transactions"),
+                func.coalesce(func.avg(OrderItem.discount_percent), 0.0).label("avg_discount"),
+                # Net line revenue = gross - discount applied to the line
+                func.coalesce(
+                    func.sum(
+                        OrderItem.total_price * (1 - OrderItem.discount_percent / 100.0)
+                    ),
+                    0.0,
+                ).label("net_revenue"),
+            )
+            .join(Order, OrderItem.order_id == Order.id)
+            .filter(*cancelled)
+            .one()
+        )
+
+        total_revenue = round(float(row.revenue), 2)
+        total_units = int(row.units)
+        total_transactions = int(row.transactions)
+        avg_discount = round(float(row.avg_discount), 2)
+        net_revenue = round(float(row.net_revenue), 2)
+
+        # AOV = revenue / transactions (guard against division by zero).
+        aov = round(total_revenue / total_transactions, 2) if total_transactions else None
+
+        # ---- Profit: gross margin per line vs product cost ----
+        profit_result = (
+            db.query(
+                func.coalesce(
+                    func.sum(
+                        OrderItem.quantity
+                        * (OrderItem.unit_price - func.coalesce(Product.cost_price, 0.0))
+                    ),
+                    0.0,
+                )
+            )
+            .join(Order, OrderItem.order_id == Order.id)
+            .join(Product, OrderItem.product_id == Product.id)
+            .filter(*cancelled)
+            .scalar()
+        )
+        total_profit = round(float(profit_result), 2)
+        profit_margin = round(total_profit / total_revenue * 100, 2) if total_revenue else None
+
+        # ---- Catalog sizes (not order-dependent) ----
         total_products = db.query(func.count(Product.id)).scalar()
-        
-        # Total retailers
         total_retailers = db.query(func.count(Store.id)).scalar()
-        
-        # Top category (revenue definition aligned with total_revenue: discounted line totals)
+
+        # ---- Top category + its contribution share ----
         top_category_result = (
             db.query(
-                Product.category_id,
-                func.sum(OrderItem.total_price).label("revenue"),
+                Category.name.label("category"),
+                func.coalesce(func.sum(OrderItem.total_price), 0.0).label("revenue"),
             )
+            .join(Product, Product.category_id == Category.id)
             .join(OrderItem, Product.id == OrderItem.product_id)
-            .group_by(Product.category_id)
+            .join(Order, OrderItem.order_id == Order.id)
+            .filter(*cancelled)
+            .group_by(Category.id, Category.name)
             .order_by(func.sum(OrderItem.total_price).desc())
             .first()
         )
-        
-        top_category_name = None
-        top_category_revenue = 0.0
-        
-        if top_category_result and top_category_result.category_id:
-            from app.models import Category
-            cat = db.query(Category).filter(Category.id == top_category_result.category_id).first()
-            if cat:
-                top_category_name = cat.name
-                top_category_revenue = round(float(top_category_result.revenue), 2)
-        
-        # Top region (revenue definition aligned with total_revenue: discounted line totals)
+        top_category = top_category_result.category if top_category_result else None
+        top_category_revenue = (
+            round(float(top_category_result.revenue), 2) if top_category_result else 0.0
+        )
+        top_category_share = (
+            round(top_category_revenue / total_revenue * 100, 2) if total_revenue else None
+        )
+
+        # ---- Top region + its contribution share ----
         top_region_result = (
             db.query(
-                Store.region,
-                func.sum(OrderItem.total_price).label("revenue"),
+                Store.region.label("region"),
+                func.coalesce(func.sum(OrderItem.total_price), 0.0).label("revenue"),
             )
             .join(Order, Store.id == Order.store_id)
             .join(OrderItem, Order.id == OrderItem.order_id)
+            .filter(*cancelled)
             .group_by(Store.region)
             .order_by(func.sum(OrderItem.total_price).desc())
             .first()
         )
-        
         top_region = top_region_result.region if top_region_result else None
-        top_region_revenue = 0.0
-        if top_region_result:
-            top_region_revenue = round(float(top_region_result.revenue), 2)
-        
-        # Monthly sales
+        top_region_revenue = (
+            round(float(top_region_result.revenue), 2) if top_region_result else 0.0
+        )
+        top_region_share = (
+            round(top_region_revenue / total_revenue * 100, 2) if total_revenue else None
+        )
+
+        # ---- Monthly series (cancelled excluded, months ordered asc) ----
         monthly_result = (
             db.query(
-                func.to_char(Order.created_at, 'YYYY-MM').label("month"),
-                func.sum(OrderItem.total_price).label("revenue"),
+                func.to_char(Order.created_at, "YYYY-MM").label("month"),
+                func.coalesce(func.sum(OrderItem.total_price), 0.0).label("revenue"),
+                func.coalesce(
+                    func.sum(
+                        OrderItem.total_price * (1 - OrderItem.discount_percent / 100.0)
+                    ),
+                    0.0,
+                ).label("net_revenue"),
                 func.count(func.distinct(Order.id)).label("transactions"),
-                func.sum(OrderItem.quantity).label("units"),
+                func.coalesce(func.sum(OrderItem.quantity), 0).label("units"),
+                func.coalesce(
+                    func.sum(
+                        OrderItem.quantity
+                        * (OrderItem.unit_price - func.coalesce(Product.cost_price, 0.0))
+                    ),
+                    0.0,
+                ).label("profit"),
             )
             .join(OrderItem, Order.id == OrderItem.order_id)
-            .group_by(func.to_char(Order.created_at, 'YYYY-MM'))
-            .order_by(func.to_char(Order.created_at, 'YYYY-MM'))
+            .join(Product, OrderItem.product_id == Product.id)
+            .filter(*cancelled)
+            .group_by(func.to_char(Order.created_at, "YYYY-MM"))
+            .order_by(func.to_char(Order.created_at, "YYYY-MM"))
             .all()
         )
-        
         monthly_sales = [
             {
-                "month": row.month,
-                "revenue": round(float(row.revenue), 2),
-                "transactions": int(row.transactions),
-                "units": int(row.units),
+                "month": r.month,
+                "revenue": round(float(r.revenue), 2),
+                "net_revenue": round(float(r.net_revenue), 2),
+                "profit": round(float(r.profit), 2),
+                "transactions": int(r.transactions),
+                "units": int(r.units),
+                "aov": round(float(r.revenue) / int(r.transactions), 2)
+                if int(r.transactions)
+                else None,
             }
-            for row in monthly_result
+            for r in monthly_result
         ]
-        
+
+        # ---- Growth: last vs previous month on equivalent periods ----
+        revenue_growth = None
+        profit_growth = None
+        if len(monthly_result) >= 2:
+            prev, last = monthly_result[-2], monthly_result[-1]
+            prev_rev, last_rev = float(prev.revenue), float(last.revenue)
+            revenue_growth = (
+                round((last_rev - prev_rev) / prev_rev * 100, 2) if prev_rev else None
+            )
+            prev_profit, last_profit = float(prev.profit), float(last.profit)
+            profit_growth = (
+                round((last_profit - prev_profit) / prev_profit * 100, 2)
+                if prev_profit
+                else None
+            )
+
         return {
-            "total_revenue": round(total_revenue, 2),
+            "total_revenue": total_revenue,
+            "net_revenue": net_revenue,
             "total_units": total_units,
             "total_transactions": total_transactions,
+            "avg_order_value": aov,
+            "total_profit": total_profit,
+            "profit_margin": profit_margin,
             "avg_discount": avg_discount,
             "total_products": int(total_products) if total_products else 0,
             "total_retailers": int(total_retailers) if total_retailers else 0,
-            "top_category": top_category_name or "N/A",
+            "top_category": top_category or "N/A",
             "top_category_revenue": top_category_revenue,
+            "top_category_share": top_category_share,
             "top_region": top_region or "N/A",
             "top_region_revenue": top_region_revenue,
+            "top_region_share": top_region_share,
+            "revenue_growth": revenue_growth,
+            "profit_growth": profit_growth,
             "monthly_sales": monthly_sales,
         }
     finally:

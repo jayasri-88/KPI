@@ -70,6 +70,14 @@ def service_sessions(pg_engine, monkeypatch):
 
 
 @pytest.fixture()
+def seeded(db_session, clean_tables):
+    """Standard deterministic fixture dataset (defined in test_analytics)."""
+    from test_analytics import seed_analytics_data
+
+    return seed_analytics_data(db_session)
+
+
+@pytest.fixture()
 def clean_tables(pg_engine, db_session):
     """Ensure empty tables before AND after each test so tests stay independent."""
     _, schema_name = pg_engine
