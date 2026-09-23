@@ -25,7 +25,7 @@ def get_inventory_alerts() -> list:
             .join(Product, Inventory.product_id == Product.id)
             .join(Store, Inventory.retailer_id == Store.retailer_id)
             .join(latest_dates,
-                  (Inventory.retaler_id == latest_dates.c.retailer_id)
+                  (Inventory.retailer_id == latest_dates.c.retailer_id)
                   & (Inventory.product_id == latest_dates.c.product_id)
                   & (func.date(Inventory.last_updated) == func.date(latest_dates.c.latest_date)))
             .all()

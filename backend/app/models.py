@@ -36,11 +36,6 @@ class User(Base):
         DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
     )
 
-    __table_args__ = (
-        Index("ix_users_email", email),
-        Index("ix_users_username", username),
-    )
-
 
 class Category(Base):
     __tablename__ = "categories"
@@ -93,11 +88,6 @@ class Product(Base):
     order_items = relationship("OrderItem", back_populates="product", cascade="all")
     inventory = relationship("Inventory", back_populates="product", cascade="all")
 
-    __table_args__ = (
-        Index("ix_products_sku", sku_code),
-        Index("ix_products_category_id", category_id),
-    )
-
 
 class Store(Base):
     __tablename__ = "stores"
@@ -118,10 +108,7 @@ class Store(Base):
     prosperity_index = Column(Float, nullable=False)
     premiumness_index = Column(Float, nullable=False)
     store_size_sqft = Column(Integer, nullable=False)
-    location = Column(
-        "Geometry",
-        nullable=False,
-    )
+    location = Column(Text, nullable=False)
     is_active = Column(Boolean, default=True, nullable=False)
     created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
     updated_at = Column(
@@ -129,10 +116,8 @@ class Store(Base):
     )
 
     orders = relationship("Order", back_populates="store", cascade="all")
-    inventory = relationship("Inventory", back_populates="store", cascade="all")
 
     __table_args__ = (
-        Index("ix_stores_retailer_id", retailer_id),
         Index("ix_stores_region", region),
     )
 
@@ -159,7 +144,6 @@ class Customer(Base):
     orders = relationship("Order", back_populates="customer", cascade="all")
 
     __table_args__ = (
-        Index("ix_customers_email", email),
         Index("ix_customers_first_name", first_name),
     )
 
@@ -201,9 +185,6 @@ class Order(Base):
     order_items = relationship("OrderItem", back_populates="order", cascade="all")
 
     __table_args__ = (
-        Index("ix_orders_store_id", store_id),
-        Index("ix_orders_customer_id", customer_id),
-        Index("ix_orders_order_number", order_number),
         Index("ix_orders_created_at", created_at),
     )
 
@@ -242,8 +223,6 @@ class OrderItem(Base):
     product = relationship("Product", back_populates="order_items")
 
     __table_args__ = (
-        Index("ix_order_items_order_id", order_id),
-        Index("ix_order_items_product_id", product_id),
         Index("ix_order_items_retailer_id", retailer_id),
     )
 
@@ -304,10 +283,8 @@ class Inventory(Base):
     )
 
     product = relationship("Product", back_populates="inventory")
-    store = relationship("Store", back_populates="inventory", foreign_keys=[retailer_id])
 
     __table_args__ = (
-        Index("ix_inventory_product_id", product_id),
         Index("ix_inventory_retailer_id", retailer_id),
         Index("ix_inventory_available", quantity_available),
         Index("ix_inventory_retailer_product", retailer_id, product_id),

@@ -1,13 +1,13 @@
 import { Link } from "react-router-dom";
 
-export default function Analytics() {
+export default function Products() {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
       <p className="text-sm font-medium text-blue-600">RETAIL INTELLIGENCE</p>
-      <h1 className="mt-1 text-3xl font-bold text-slate-900">Analytics</h1>
+      <h1 className="mt-1 text-3xl font-bold text-slate-900">Products</h1>
       <p className="mt-3 text-sm text-slate-500">
-        This page is a placeholder. Detailed analytics functionality will be
-        implemented in a later commit.
+        This page is a placeholder. Detailed product management functionality
+        will be implemented in a later commit.
       </p>
       <Link
         to="/dashboard"

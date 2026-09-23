@@ -10,13 +10,13 @@ def get_sales_trend() -> list:
     try:
         results = (
             db.query(
-                func.strftime("%Y-%m", Sales.date).label("month"),
+                func.to_char(Sales.date, 'YYYY-MM').label("month"),
                 func.sum(Sales.revenue).label("revenue"),
                 func.sum(Sales.quantity).label("units"),
                 func.count(Sales.id).label("transactions"),
             )
-            .group_by(func.strftime("%Y-%m", Sales.date))
-            .order_by(func.strftime("%Y-%m", Sales.date))
+            .group_by(func.to_char(Sales.date, 'YYYY-MM'))
+            .order_by(func.to_char(Sales.date, 'YYYY-MM'))
             .all()
         )
         
@@ -93,10 +93,10 @@ def get_sku_performance() -> list:
                 "sku_code": item[1] or "",
                 "product_name": item[2] or "",
                 "category": str(item[3]) if item[3] else "",
-                "revenue": round(float(item[4]) if item[4] else 0, 2),
-                "units": int(item[3]) if item[3] else 0,
-                "transactions": int(item[5]) if item[5] else 0,
-                "avg_discount": round(float(item[4]) if item[4] else 0, 2),
+                "revenue": round(float(item[5]) if item[5] else 0, 2),
+                "units": int(item[4]) if item[4] else 0,
+                "transactions": int(item[7]) if item[7] else 0,
+                "avg_discount": round(float(item[6]) if item[6] else 0, 2),
             }
             for item in results
         ]

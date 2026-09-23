@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from sqlalchemy import text
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.core.config import settings
@@ -10,6 +11,8 @@ from app.api.stores import router as stores_router
 from app.api.products import router as products_router
 from app.api.customers import router as customers_router
 from app.api.orders import router as orders_router
+from app.api.inventory import router as inventory_router
+from app.api.sku import router as sku_router
 
 
 app = FastAPI(
@@ -43,6 +46,8 @@ app.include_router(stores_router, prefix="/api/stores", tags=["Stores"])
 app.include_router(products_router, prefix="/api/products", tags=["Products"])
 app.include_router(customers_router, prefix="/api/customers", tags=["Customers"])
 app.include_router(orders_router, prefix="/api/orders", tags=["Orders"])
+app.include_router(inventory_router, prefix="/api/inventory", tags=["Inventory"])
+app.include_router(sku_router, prefix="/api/sku", tags=["SKU Intelligence"])
 
 
 @app.get("/")
@@ -59,7 +64,7 @@ def health():
     db = next(get_db())
     try:
         # Test basic connection
-        db.execute("SELECT 1")
+        db.execute(text("SELECT 1"))
         return {
             "application": "healthy",
             "database": "connected",

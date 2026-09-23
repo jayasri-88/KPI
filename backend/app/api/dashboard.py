@@ -4,7 +4,6 @@ from app.services.dashboard_service import (
     get_dashboard_overview,
 )
 router = APIRouter(
-    prefix="/api/dashboard",
     tags=["Dashboard"],
 )
 

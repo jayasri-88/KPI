@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from app.database import SessionLocal
+from app.models import OrderItem, Order, Product, Store
 
 
 def get_dashboard_overview() -> dict:
@@ -75,14 +76,14 @@ def get_dashboard_overview() -> dict:
         # Monthly sales
         monthly_result = (
             db.query(
-                func.strftime("%Y-%m", Order.created_at).label("month"),
+                func.to_char(Order.created_at, 'YYYY-MM').label("month"),
                 func.sum(OrderItem.total_price).label("revenue"),
                 func.count(func.distinct(Order.id)).label("transactions"),
                 func.sum(OrderItem.quantity).label("units"),
             )
             .join(OrderItem, Order.id == OrderItem.order_id)
-            .group_by(func.strftime("%Y-%m", Order.created_at))
-            .order_by(func.strftime("%Y-%m", Order.created_at))
+            .group_by(func.to_char(Order.created_at, 'YYYY-MM'))
+            .order_by(func.to_char(Order.created_at, 'YYYY-MM'))
             .all()
         )
         

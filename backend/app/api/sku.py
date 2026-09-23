@@ -7,7 +7,6 @@ from app.services.sku_service import (
 
 
 router = APIRouter(
-    prefix="/api/sku",
     tags=["SKU Intelligence"],
 )
 

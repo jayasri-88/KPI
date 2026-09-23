@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, event
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 
@@ -28,11 +28,3 @@ def get_db():
 def init_db():
     """Create all tables in the database."""
     Base.metadata.create_all(bind=engine)
-
-
-@event.listens_for(engine, "connect")
-def set_postgis_type(**kwargs):
-    """Ensure PostGIS types are registered on connection."""
-    from sqlalchemy import types
-    # This ensures geoalchemy types are loaded
-    pass
