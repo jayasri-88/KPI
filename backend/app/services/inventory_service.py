@@ -8,72 +8,51 @@ from app.models import Product, Inventory, Store
 def get_inventory_alerts() -> list:
     db = SessionLocal()
     try:
-        # Get latest inventory dates per product-retailer combination
-        latest_dates = (
-            db.query(
-                Inventory.retailer_id,
-                Inventory.product_id,
-                func.max(Inventory.last_updated).label("latest_date"),
-            )
-            .group_by(Inventory.retailer_id, Inventory.product_id)
-            .subquery()
-        )
-        
-        # Get current inventory with stock levels
+        # Only genuinely alert-worthy rows: stock strictly below reorder
+        # point (critical = 0 on hand, high = <= 50% of reorder point,
+        # warning = below reorder point; matches get_inventory_summary).
         results = (
             db.query(Inventory, Product, Store)
             .join(Product, Inventory.product_id == Product.id)
             .join(Store, Inventory.retailer_id == Store.retailer_id)
-            .join(latest_dates,
-                  (Inventory.retailer_id == latest_dates.c.retailer_id)
-                  & (Inventory.product_id == latest_dates.c.product_id)
-                  & (func.date(Inventory.last_updated) == func.date(latest_dates.c.latest_date)))
+            .filter(Inventory.quantity_on_hand < Inventory.reorder_point)
             .all()
         )
-        
-        # Simplified - just get all inventory and find low stock
-        inventory_items = db.query(Inventory).all()
-        
+
         alerts = []
-        for item in inventory_items:
-            product = db.query(Product).filter(Product.id == item.product_id).first()
-            if not product:
-                continue
-            
+        for item, product, store in results:
             stock_ratio = 1.0
             if item.quantity_on_hand > 0 and item.reorder_point > 0:
                 stock_ratio = item.quantity_on_hand / item.reorder_point
-            
+
             if item.quantity_on_hand == 0:
                 severity = "critical"
             elif stock_ratio <= 0.5:
                 severity = "high"
-            elif stock_ratio <= 1.0:
-                severity = "warning"
             else:
-                severity = "ok"
-            
+                severity = "warning"
+
             alerts.append(
                 {
                     "inventory_id": str(item.id),
                     "product_id": str(item.product_id),
-                    "product_name": product.product_name if product else "Unknown",
-                    "sku_code": product.sku_code if product else "UNKNOWN",
+                    "product_name": product.product_name,
+                    "sku_code": product.sku_code,
                     "retailer_id": item.retailer_id,
-                    "retailer_name": "",
-                    "city": "",
-                    "region": "",
+                    "retailer_name": store.retailer_name,
+                    "city": store.city,
+                    "region": store.region,
                     "stock_level": item.quantity_on_hand,
                     "reorder_point": item.reorder_point,
                     "stock_ratio": round(stock_ratio, 2),
                     "severity": severity,
                 }
             )
-        
+
         # Sort: critical first, then high, then warning
-        severity_order = {"critical": 0, "high": 1, "warning": 2, "ok": 3}
-        alerts.sort(key=lambda x: severity_order.get(x["severity"], 99))
-        
+        severity_order = {"critical": 0, "high": 1, "warning": 2}
+        alerts.sort(key=lambda x: (severity_order[x["severity"]], x["stock_ratio"]))
+
         return alerts
     finally:
         db.close()
