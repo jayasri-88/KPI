@@ -2,7 +2,7 @@ from sqlalchemy.orm import Session
 from sqlalchemy import func
 
 from app.database import SessionLocal
-from app.models import Product, OrderItem, Store, Order, Sales
+from app.models import Product, OrderItem, Store, Order, Sales, Category
 
 
 def get_sales_trend() -> list:
@@ -22,12 +22,12 @@ def get_sales_trend() -> list:
         
         return [
             {
-                "month": item[0],
-                "revenue": round(float(item[1]) if item[1] else 0, 2),
-                "units": int(item[2]) if item[2] else 0,
-                "transactions": int(item[3]) if item[3] else 0,
+                "month": row.month,
+                "revenue": round(float(row.revenue), 2) if row.revenue else 0,
+                "units": int(row.units) if row.units else 0,
+                "transactions": int(row.transactions) if row.transactions else 0,
             }
-            for item in results
+            for row in results
         ]
     finally:
         db.close()
@@ -38,29 +38,27 @@ def get_category_performance() -> list:
     try:
         results = (
             db.query(
-                Product.category_id,
-                func.sum(OrderItem.quantity * OrderItem.unit_price).label("revenue"),
+                Category.name.label("category"),
+                func.sum(OrderItem.total_price).label("revenue"),
                 func.sum(OrderItem.quantity).label("units"),
-                func.count(func.distinct(OrderItem.id)).label("transactions"),
+                func.count(func.distinct(Order.id)).label("transactions"),
             )
+            .join(Product, Product.category_id == Category.id)
             .join(OrderItem, Product.id == OrderItem.product_id)
-            .group_by(Product.category_id)
-            .order_by(func.sum(OrderItem.quantity * OrderItem.unit_price).desc())
+            .join(Order, OrderItem.order_id == Order.id)
+            .group_by(Category.id, Category.name)
+            .order_by(func.sum(OrderItem.total_price).desc())
             .all()
         )
         
-        # Fetch category names
-        from app.models import Category
-        category_map = {str(c.id): c.name for c in db.query(Category).all()}
-        
         return [
             {
-                "category": category_map.get(str(item[0]), "Uncategorized"),
-                "revenue": round(float(item[1]), 2),
-                "units": int(item[2]) if item[2] else 0,
-                "transactions": int(item[3]) if item[3] else 0,
+                "category": row.category or "Uncategorized",
+                "revenue": round(float(row.revenue), 2) if row.revenue else 0,
+                "units": int(row.units) if row.units else 0,
+                "transactions": int(row.transactions) if row.transactions else 0,
             }
-            for item in results
+            for row in results
         ]
     finally:
         db.close()
@@ -71,34 +69,35 @@ def get_sku_performance() -> list:
     try:
         results = (
             db.query(
-                OrderItem.product_id,
-                Product.sku_code,
-                Product.product_name,
-                Product.category_id,
+                OrderItem.product_id.label("product_id"),
+                Product.sku_code.label("sku_code"),
+                Product.product_name.label("product_name"),
+                Category.name.label("category"),
                 func.sum(OrderItem.quantity).label("units"),
                 func.sum(OrderItem.total_price).label("revenue"),
                 func.avg(OrderItem.discount_percent).label("avg_discount"),
-                func.count(Order.id).label("transactions"),
+                func.count(func.distinct(Order.id)).label("transactions"),
             )
             .join(Product, OrderItem.product_id == Product.id)
-            .outerjoin(Order, OrderItem.order_id == Order.id)
-            .group_by(OrderItem.product_id, Product.sku_code, Product.product_name, Product.category_id)
+            .join(Order, OrderItem.order_id == Order.id)
+            .outerjoin(Category, Product.category_id == Category.id)
+            .group_by(OrderItem.product_id, Product.sku_code, Product.product_name, Category.name)
             .order_by(func.sum(OrderItem.total_price).desc())
             .all()
         )
         
         return [
             {
-                "product_id": str(item[0]) if item[0] else "",
-                "sku_code": item[1] or "",
-                "product_name": item[2] or "",
-                "category": str(item[3]) if item[3] else "",
-                "revenue": round(float(item[5]) if item[5] else 0, 2),
-                "units": int(item[4]) if item[4] else 0,
-                "transactions": int(item[7]) if item[7] else 0,
-                "avg_discount": round(float(item[6]) if item[6] else 0, 2),
+                "product_id": str(row.product_id) if row.product_id else "",
+                "sku_code": row.sku_code or "",
+                "product_name": row.product_name or "",
+                "category": row.category or "Uncategorized",
+                "revenue": round(float(row.revenue), 2) if row.revenue else 0,
+                "units": int(row.units) if row.units else 0,
+                "transactions": int(row.transactions) if row.transactions else 0,
+                "avg_discount": round(float(row.avg_discount), 2) if row.avg_discount else 0,
             }
-            for item in results
+            for row in results
         ]
     finally:
         db.close()
@@ -109,7 +108,7 @@ def get_region_performance() -> list:
     try:
         results = (
             db.query(
-                Store.region,
+                Store.region.label("region"),
                 func.sum(OrderItem.total_price).label("revenue"),
                 func.sum(OrderItem.quantity).label("units"),
                 func.count(func.distinct(Order.id)).label("transactions"),
@@ -124,13 +123,13 @@ def get_region_performance() -> list:
         
         return [
             {
-                "region": item[0] or "Unknown",
-                "revenue": round(float(item[1]) if item[1] else 0, 2),
-                "units": int(item[2]) if item[2] else 0,
-                "transactions": int(item[3]) if item[3] else 0,
-                "retailer_count": int(item[4]) if item[4] else 0,
+                "region": row.region or "Unknown",
+                "revenue": round(float(row.revenue), 2) if row.revenue else 0,
+                "units": int(row.units) if row.units else 0,
+                "transactions": int(row.transactions) if row.transactions else 0,
+                "retailer_count": int(row.retailer_count) if row.retailer_count else 0,
             }
-            for item in results
+            for row in results
         ]
     finally:
         db.close()
