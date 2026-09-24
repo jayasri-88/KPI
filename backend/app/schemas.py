@@ -1,7 +1,8 @@
+import uuid
+
 from pydantic import BaseModel, Field, EmailStr
 from typing import Optional, List
 from datetime import datetime
-from sqlalchemy import UUID as SQLUUID
 
 
 # --- Authentication Schemas ---
@@ -44,7 +45,7 @@ class UserInDB(BaseModel):
 # --- User Schemas ---
 
 class UserSchema(BaseModel):
-    id: str = Field(alias="id")
+    id: uuid.UUID
     email: EmailStr
     username: str
     full_name: Optional[str] = None
@@ -60,7 +61,7 @@ class UserSchema(BaseModel):
 # --- Category Schemas ---
 
 class CategorySchema(BaseModel):
-    id: str
+    id: uuid.UUID
     name: str
     description: Optional[str] = None
     is_active: bool
@@ -74,11 +75,11 @@ class CategorySchema(BaseModel):
 # --- Product Schemas ---
 
 class ProductSchema(BaseModel):
-    id: str
+    id: uuid.UUID
     sku_code: str
     product_name: str
     description: Optional[str] = None
-    category_id: Optional[str] = None
+    category_id: Optional[uuid.UUID] = None
     brand: Optional[str] = None
     unit_price: float
     cost_price: float
@@ -108,7 +109,7 @@ class ProductCreate(BaseModel):
 # --- Store Schemas ---
 
 class StoreSchema(BaseModel):
-    id: str
+    id: uuid.UUID
     retailer_id: int
     retailer_name: str
     store_type: str
@@ -160,7 +161,7 @@ class StoreUpdate(BaseModel):
 # --- Customer Schemas ---
 
 class CustomerSchema(BaseModel):
-    id: str
+    id: uuid.UUID
     email: EmailStr
     first_name: str
     last_name: str
@@ -186,7 +187,7 @@ class CustomerCreate(BaseModel):
 # --- Order Schemas ---
 
 class OrderItemSchema(BaseModel):
-    id: str
+    id: uuid.UUID
     product_sku: str
     product_name: str
     category_name: Optional[str] = None
@@ -210,10 +211,10 @@ class OrderItemCreate(BaseModel):
 
 
 class OrderSchema(BaseModel):
-    id: str
+    id: uuid.UUID
     order_number: str
-    store_id: Optional[str] = None
-    customer_id: Optional[str] = None
+    store_id: Optional[uuid.UUID] = None
+    customer_id: Optional[uuid.UUID] = None
     total_amount: float
     total_items: int
     total_revenue: float
@@ -259,8 +260,8 @@ class DailySales(BaseModel):
 # --- Inventory Schemas ---
 
 class InventorySchema(BaseModel):
-    id: str
-    product_id: str
+    id: uuid.UUID
+    product_id: uuid.UUID
     retailer_id: int
     quantity_on_hand: int
     quantity_reserved: int

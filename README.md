@@ -38,8 +38,8 @@ backend/
   tests/                  Pytest suite (runs against a throwaway Postgres schema)
 frontend/
   src/
-    pages/                Dashboard, Analytics, Sales, Stores, Products,
-                          Customers, Forecast, Assistant, Auth
+    pages/                Dashboard, Analytics, Stores, Products, Inventory,
+                          Customers, Auth  (+ Forecast/Assistant placeholders)
     components/           Charts (recharts), metric cards, inventory alerts
     services/api.js       Axios client — every call targets /api/*
   vite.config.js          Dev proxy: /api → http://localhost:8000
@@ -55,7 +55,7 @@ Requires Python 3.12 and a reachable PostgreSQL database.
 ```bash
 cd backend
 python -m venv .venv
-.venv/bin/pip install -r requirements.txt   # NOTE: see Known issues — file is UTF-16
+.venv/bin/pip install -r requirements.txt
 ```
 
 Create `backend/.env` (gitignored):
@@ -186,13 +186,12 @@ profit, growth, contributions, SKU field mapping, and empty-database stability.
 
 ## Known issues / limitations
 
-- `backend/requirements.txt` is UTF-16 encoded, which `pip install -r` rejects
-  (`pip install -r <(iconv -f UTF-16 -t UTF-8 backend/requirements.txt)` works around it).
-  It is also missing `pandas` and `pytest`.
 - Inventory history (older snapshots) is discarded on load; the schema models
   current state only.
 - Orders are single-line (1 transaction = 1 order item) because the source data is
   transaction-grain.
-- Sales, Forecast and Assistant pages are placeholders awaiting future commits.
+- Forecast and Assistant pages are placeholders awaiting future commits (they need
+  backend routers plus AI/forecasting work). `pages/Sales.jsx` is now unused — the
+  monthly sales view lives in Analytics.
 - The Neon credentials used during development were shared in chat — rotate before
   any real deployment.

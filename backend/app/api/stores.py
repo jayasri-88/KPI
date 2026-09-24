@@ -9,7 +9,7 @@ from app.schemas import StoreSchema, StoreCreate, StoreUpdate
 router = APIRouter(tags=["Stores"])
 
 
-@router.get("/", response_model=list)
+@router.get("/", response_model=list[StoreSchema])
 def list_stores(
     skip: int = 0,
     limit: int = 100,
@@ -27,7 +27,7 @@ def list_stores(
     return stores
 
 
-@router.get("/{store_id}", response_model=dict)
+@router.get("/{store_id}", response_model=StoreSchema)
 def get_store(store_id: str, db: Session = Depends(get_db)):
     from sqlalchemy import UUID
     store = db.query(Store).filter(Store.id == UUID(store_id)).first()

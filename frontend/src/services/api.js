@@ -1,6 +1,8 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:8000/api";
+// Relative base URL: in dev, the Vite proxy forwards /api → http://localhost:8000;
+// in production the app is expected to be served behind the same origin as the API.
+const API_BASE_URL = "/api";
 
 // Create axios instance with auth token
 const api = axios.create({
@@ -40,6 +42,11 @@ export const getRegionPerformance = async () => {
 
 export const getCategoryPerformance = async () => {
   const response = await api.get("/analytics/category-performance");
+  return response.data;
+};
+
+export const getSkuPerformance = async () => {
+  const response = await api.get("/analytics/sku-performance");
   return response.data;
 };
 

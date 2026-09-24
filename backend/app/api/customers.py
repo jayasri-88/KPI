@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
@@ -10,7 +10,7 @@ from app.schemas import CustomerSchema, CustomerCreate
 router = APIRouter(tags=["Customers"])
 
 
-@router.get("/", response_model=list)
+@router.get("/", response_model=list[CustomerSchema])
 def list_customers(
     skip: int = 0,
     limit: int = 100,
@@ -59,7 +59,7 @@ def create_customer(customer: CustomerCreate, db: Session = Depends(get_db)):
 
 
 @router.put("/{customer_id}", response_model=CustomerSchema)
-def update_customer(customer_id: str, customer_data, db: Session = Depends(get_db)):
+def update_customer(customer_id: str, customer_data: CustomerCreate, db: Session = Depends(get_db)):
     from sqlalchemy import UUID
     db_customer = db.query(Customer).filter(Customer.id == UUID(customer_id)).first()
     if not db_customer:
