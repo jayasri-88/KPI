@@ -29,7 +29,8 @@ def list_products(
         )
     
     products = query.offset(skip).limit(limit).all()
-    return products
+    total = query.count()
+    return {"items": products, "total": total, "skip": skip, "limit": limit}
 
 
 @router.get("/{product_id}", response_model=ProductSchema)

@@ -1,0 +1,31 @@
+{
+  "model_type": "Prophet (Additive Trend + Weekly/Yearly Seasonality)",
+  "store_id": null,
+  "trained_at": "2026-10-10T06:23:33.840121",
+  "train_days": 388,
+  "test_days": 30,
+  "last_observed_date": "2026-10-10",
+  "metrics": {
+    "mae": 36042.05,
+    "rmse": 44691.38,
+    "mape": 58.97,
+    "wape": 64.79,
+    "r2": -0.0625
+  },
+  "features_used": {
+    "day_of_week": "Day of the week (0=Monday, 6=Sunday), capturing intra-week shopping patterns.",
+    "day_of_month": "Calendar day of the month (1-31), capturing salary cycles and mid-month surges.",
+    "month": "Calendar month (1-12), capturing seasonal and quarterly retail trends.",
+    "quarter": "Financial quarter (1-4), tracking macro retail performance shifts.",
+    "is_weekend": "Binary flag (1 for Saturday/Sunday, 0 otherwise) capturing footfall spikes.",
+    "is_month_end": "Binary flag (1 for last 3 days of calendar month), tracking end-of-month clearance promotions.",
+    "lag_1": "Sales volume on immediate previous day (T-1), capturing short-term auto-regressive momentum.",
+    "lag_7": "Sales volume 7 days prior (T-7), capturing same-day-of-week seasonality.",
+    "lag_14": "Sales volume 14 days prior (T-14), capturing bi-weekly retail cadence.",
+    "lag_30": "Sales volume 30 days prior (T-30), capturing monthly baseline sales.",
+    "rolling_mean_7": "7-day trailing simple moving average shifted by 1 to prevent data leakage.",
+    "rolling_std_7": "7-day trailing volatility / standard deviation shifted by 1.",
+    "rolling_mean_30": "30-day trailing baseline moving average shifted by 1.",
+    "trend_step": "Ordinal continuous time index capturing long-term growth or decline trend."
+  }
+}

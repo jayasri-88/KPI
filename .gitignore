@@ -1,3 +1,6 @@
+# ==============================================================================
+# Git Ignore Configuration - Retail KPI Intelligence Platform
+# ==============================================================================
 
 # Operating-system files
 .DS_Store
@@ -10,16 +13,21 @@ Desktop.ini
 *.swp
 *.swo
 
-# Environment and secrets
+# Environment and secrets (CRITICAL: Never commit secrets)
 .env
 .env.*
 !.env.example
 *.pem
 *.key
+*.cert
+*.crt
+*.pfx
+secrets.json
 
 # Python
 __pycache__/
 *.py[cod]
+*$py.class
 *.pyo
 .pytest_cache/
 .mypy_cache/
@@ -30,6 +38,7 @@ htmlcov/
 .venv/
 venv/
 env/
+ENV/
 
 # Node.js
 node_modules/
@@ -38,7 +47,7 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Build and coverage output
+# Build and coverage outputs
 dist/
 build/
 out/
@@ -51,7 +60,13 @@ coverage/
 *.sqlite3
 *.log
 
+# Docker / Local Overrides
+docker-compose.override.yml
+.docker/
+kpi/
+
 # Temporary files
 *.tmp
 *.temp
 *.bak
+*.swp

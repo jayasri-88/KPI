@@ -1,9 +1,6 @@
-# Frontend
+# React + Vite
 
-React 19 + Vite dashboard for the Retail KPI Intelligence Platform.
-
-See the [root README](../README.md) for full project documentation — stack,
-quickstart, API surface and data pipeline. Development notes below.
+This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:
 

@@ -7,6 +7,7 @@ from app.services.inventory_service import (
 
 
 router = APIRouter(
+    prefix="/api/inventory",
     tags=["Inventory"],
 )
 

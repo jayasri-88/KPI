@@ -1,93 +1,74 @@
-"""Fixtures for analytics service tests.
-
-Runs against the project's PostgreSQL database (DATABASE_URL resolved by
-app.core.config), but inside a throwaway schema created once per test
-session, so application tables are never touched. The schema is dropped
-again on teardown.
-
-The schema is attached explicitly to every Table in the metadata instead
-of via search_path, because pooled Neon endpoints reject the search_path
-startup parameter. Services are exercised through their real code paths
-by pointing their module-level SessionLocal at a session factory bound to
-the test engine.
+"""
+Pytest Fixtures and Global Configurations for Retail KPI Test Suite
 """
 
-import uuid
-
+import sys
+import os
+from pathlib import Path
 import pytest
-from sqlalchemy import create_engine, text
-from sqlalchemy.orm import sessionmaker
+from fastapi.testclient import TestClient
 
-from app.core.config import settings
-from app.database import Base
-import app.models  # noqa: F401  (registers all mappers on Base)
+# Ensure backend root is on sys.path
+BACKEND_DIR = Path(__file__).resolve().parent.parent
+if str(BACKEND_DIR) not in sys.path:
+    sys.path.insert(0, str(BACKEND_DIR))
+
+from app.main import app
+from app.database import SessionLocal
+from app.models import User, Store, Product, Category
+from app.core.security import create_access_token
 
 
 @pytest.fixture(scope="session")
-def pg_engine():
-    schema_name = f"analytics_test_{uuid.uuid4().hex[:12]}"
-    engine = create_engine(settings.database_url)
-
-    with engine.connect() as conn:
-        conn.execute(text(f'CREATE SCHEMA "{schema_name}"'))
-        conn.commit()
-
-    # Fully-qualify every table with the throwaway schema (pooler-safe).
-    for table in Base.metadata.tables.values():
-        table.schema = schema_name
-    Base.metadata.create_all(bind=engine)
-
-    yield engine, schema_name
-
-    Base.metadata.drop_all(bind=engine)
-    for table in Base.metadata.tables.values():
-        table.schema = None
-    with engine.connect() as conn:
-        conn.execute(text(f'DROP SCHEMA IF EXISTS "{schema_name}" CASCADE'))
-        conn.commit()
-    engine.dispose()
+def client():
+    """Provides a reusable FastAPI TestClient instance."""
+    with TestClient(app) as c:
+        yield c
 
 
-@pytest.fixture()
-def db_session(pg_engine):
-    _, _ = pg_engine
-    Session = sessionmaker(bind=pg_engine[0])
-    session = Session()
+@pytest.fixture(scope="function")
+def db():
+    """Provides a scoped database session with automatic cleanup."""
+    session = SessionLocal()
     try:
         yield session
+    finally:
+        session.rollback()
+        session.close()
+
+
+@pytest.fixture(scope="session")
+def admin_user():
+    """Fetches or returns admin user details."""
+    session = SessionLocal()
+    try:
+        user = session.query(User).filter(User.role == "admin").first()
+        if not user:
+            user = session.query(User).first()
+        return {
+            "id": str(user.id),
+            "email": user.email,
+            "username": user.username,
+            "role": user.role,
+        }
     finally:
         session.close()
 
 
-@pytest.fixture()
-def service_sessions(pg_engine, monkeypatch):
-    """Route the services' SessionLocal to the isolated test schema."""
-    from app.services import analytics_service, dashboard_service
-
-    TestSession = sessionmaker(bind=pg_engine[0])
-    monkeypatch.setattr(analytics_service, "SessionLocal", TestSession)
-    monkeypatch.setattr(dashboard_service, "SessionLocal", TestSession)
-
-
-@pytest.fixture()
-def seeded(db_session, clean_tables):
-    """Standard deterministic fixture dataset (defined in test_analytics)."""
-    from test_analytics import seed_analytics_data
-
-    return seed_analytics_data(db_session)
-
-
-@pytest.fixture()
-def clean_tables(pg_engine, db_session):
-    """Ensure empty tables before AND after each test so tests stay independent."""
-    _, schema_name = pg_engine
-    table_list = ", ".join(
-        f'"{schema_name}".{name}' for name in Base.metadata.tables
+@pytest.fixture(scope="session")
+def admin_token(admin_user):
+    """Generates a valid JWT access token for admin user."""
+    return create_access_token(
+        subject=admin_user["id"],
+        extra_claims={
+            "email": admin_user["email"],
+            "username": admin_user["username"],
+            "role": admin_user["role"],
+        },
     )
-    db_session.rollback()
-    db_session.execute(text(f"TRUNCATE {table_list}"))
-    db_session.commit()
-    yield
-    db_session.rollback()
-    db_session.execute(text(f"TRUNCATE {table_list}"))
-    db_session.commit()
+
+
+@pytest.fixture(scope="session")
+def auth_headers(admin_token):
+    """Provides authorization header for protected endpoints."""
+    return {"Authorization": f"Bearer {admin_token}"}
